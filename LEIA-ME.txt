@@ -1,11 +1,9 @@
-MYSPACE v2
+MYSPACE v3
 
-Atualização com tarefas, agenda, finanças, estudos, metas, notas, backup e funcionamento offline via PWA.
+Novidades: calendário mensal interativo com compromissos por dia e resumo visual de entradas/despesas. Mantém tarefas, agenda, finanças, estudos, metas, notas e backup da v2.
 
-Como atualizar:
-1. No GitHub, abra o repositório.
-2. Abra cada arquivo e escolha Edit (lápis), substitua todo o conteúdo pelo arquivo correspondente desta pasta e faça Commit changes.
-3. Atualize também manifest.webmanifest, sw.js e icon.svg.
-4. Aguarde o Pages publicar. No Android, feche o MYSPACE e abra novamente. Se a versão antiga continuar, feche o app e limpe apenas o cache do site no Chrome; não limpe os dados do site, pois isso pode apagar seus registros locais.
+ATENÇÃO: esta versão mantém a mesma chave de armazenamento local (myspace.v2.data) para preservar os dados já existentes no mesmo navegador/dispositivo. Mesmo assim, faça um backup antes de atualizar. Não limpe os dados do site nem desinstale o app.
 
-Os dados são armazenados localmente no navegador/dispositivo, sem sincronização em nuvem. Faça backup regularmente. Esta versão tenta migrar as tarefas da versão anterior automaticamente.
+Atualização no GitHub: substitua os arquivos index.html, manifest.webmanifest, sw.js e icon.svg pelos desta pasta e faça Commit changes. O arquivo LEIA-ME.txt é apenas informativo. Aguarde o GitHub Pages publicar e reabra o app.
+
+Os dados permanecem locais, sem sincronização em nuvem. Notificações automáticas quando o app está fechado não fazem parte desta versão.
