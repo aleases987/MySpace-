@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#10131b">
+  <title>MYSPACE</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <style>
+    :root{color-scheme:dark;--bg:#10131b;--panel:#1b2230;--panel2:#222b3b;--text:#f4f6fb;--muted:#a5adbd;--gold:#e9c45b;--line:#30394a;--green:#65d6a1}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif}
+    .app{max-width:760px;margin:auto;padding:22px 16px 100px}
+    header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 24px}
+    .logo{font-size:25px;font-weight:850;letter-spacing:2px}.logo span{color:var(--gold)}
+    .tag{font-size:11px;color:var(--green);border:1px solid #286b50;border-radius:20px;padding:6px 10px}
+    h1{font-size:28px;margin:0 0 5px} .sub{color:var(--muted);margin:0 0 22px}
+    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
+    .card,.section{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+    .statlabel{color:var(--muted);font-size:13px}.statnum{font-size:27px;font-weight:750;margin-top:5px}
+    .section{margin:14px 0}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    h2{font-size:17px;margin:0}.small{font-size:12px;color:var(--muted)}
+    .progress{height:8px;background:#343e50;border-radius:20px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:var(--gold);transition:width .2s}
+    form{display:flex;gap:8px;margin:12px 0 4px}input,select,textarea{min-width:0;width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:13px;font:inherit}
+    button{border:0;border-radius:12px;padding:12px 15px;background:var(--gold);color:#171717;font-weight:750;font:inherit;cursor:pointer}
+    .add{white-space:nowrap;font-weight:800}.tasklist{display:grid;gap:8px}
+    .task{display:flex;align-items:center;gap:10px;background:var(--panel2);padding:12px;border-radius:13px}
+    .task input{width:20px;height:20px;accent-color:var(--gold);flex:0 0 auto}
+    .taskname{flex:1;overflow-wrap:anywhere}.done .taskname{text-decoration:line-through;color:var(--muted)}
+    .delete{background:transparent;color:#ff9292;padding:5px 8px;font-size:18px}
+    .empty{color:var(--muted);text-align:center;padding:18px 4px;font-size:14px}
+    nav{position:fixed;bottom:0;left:0;right:0;background:#151a24ee;border-top:1px solid var(--line);display:flex;justify-content:center;gap:8px;padding:10px 8px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
+    nav button{background:transparent;color:var(--muted);font-size:12px;padding:9px 12px}nav button.active{color:var(--gold);background:#292a2a}
+    .view{display:none}.view.active{display:block}.notice{color:var(--muted);font-size:13px;line-height:1.5}
+    .backup{display:flex;gap:8px;flex-wrap:wrap}.backup button{font-size:13px}
+    @media(min-width:560px){.stats{grid-template-columns:repeat(4,1fr)}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header><div class="logo">MY<span>SPACE</span></div><div class="tag">● SALVO NO DISPOSITIVO</div></header>
+  <section id="home" class="view active">
+    <h1>Olá! 👋</h1><p class="sub">Vamos organizar seu dia?</p>
+    <div class="stats">
+      <div class="card"><div class="statlabel">Tarefas no total</div><div class="statnum" id="total">0</div></div>
+      <div class="card"><div class="statlabel">Concluídas</div><div class="statnum" id="completed">0</div></div>
+      <div class="card"><div class="statlabel">Pendentes</div><div class="statnum" id="pending">0</div></div>
+      <div class="card"><div class="statlabel">Progresso</div><div class="statnum" id="percent">0%</div></div>
+    </div>
+    <div class="section"><div class="sectionhead"><h2>Progresso das tarefas</h2><span class="small" id="progressText">0 de 0</span></div><div class="progress"><div class="bar" id="bar"></div></div></div>
+    <div class="section"><div class="sectionhead"><h2>Adicionar tarefa</h2><span class="small">Salvamento automático</span></div>
+      <form id="taskForm"><input id="taskInput" maxlength="100" placeholder="Ex.: Estudar matemática..." autocomplete="off" required><button class="add" type="submit">Adicionar</button></form>
+    </div>
+    <div class="section"><div class="sectionhead"><h2>Minhas tarefas</h2><span class="small" id="taskCount">0 itens</span></div><div id="tasks" class="tasklist"></div></div>
+  </section>
+  <section id="agenda" class="view">
+    <h1>Agenda</h1><p class="sub">Seus compromissos em um só lugar.</p>
+    <div class="section"><h2>Em breve</h2><p class="notice">A próxima etapa será adicionar compromissos, datas e lembretes. Nesta primeira versão, o sistema de tarefas já funciona e salva seus dados localmente.</p></div>
+  </section>
+  <section id="financas" class="view">
+    <h1>Finanças</h1><p class="sub">Acompanhe seu dinheiro.</p>
+    <div class="section"><h2>Em breve</h2><p class="notice">Vamos adicionar receitas, despesas e saldo na próxima etapa.</p></div>
+  </section>
+  <section id="mais" class="view">
+    <h1>Mais opções</h1><p class="sub">Proteja seus dados e personalize seu espaço.</p>
+    <div class="section"><h2>Backup dos seus dados</h2><p class="notice">Exporte uma cópia das tarefas ou importe um backup salvo anteriormente.</p><div class="backup"><button id="exportBtn">Exportar backup</button><button id="importBtn">Importar backup</button><input id="fileInput" type="file" accept="application/json" hidden></div></div>
+    <div class="section"><h2>Sobre o MYSPACE</h2><p class="notice">Versão inicial • Funciona offline depois de instalado. Os dados ficam neste dispositivo e neste navegador. Limpar os dados do navegador ou desinstalar pode apagá-los; faça backups regularmente.</p></div>
+  </section>
+</div>
+<nav>
+  <button class="active" data-view="home">⌂ Início</button>
+  <button data-view="agenda">▦ Agenda</button>
+  <button data-view="financas">＄ Finanças</button>
+  <button data-view="mais">⋯ Mais</button>
+</nav>
+<script>
+const KEY='myspace.tasks.v1';
+let tasks=[];
+try{tasks=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(tasks))tasks=[]}catch(e){tasks=[]}
+const save=()=>{localStorage.setItem(KEY,JSON.stringify(tasks));render()};
+function render(){
+ const done=tasks.filter(t=>t.done).length,total=tasks.length,pct=total?Math.round(done/total*100):0;
+ document.getElementById('total').textContent=total;
+ document.getElementById('completed').textContent=done;
+ document.getElementById('pending').textContent=total-done;
+ document.getElementById('percent').textContent=pct+'%';
+ document.getElementById('bar').style.width=pct+'%';
+ document.getElementById('progressText').textContent=done+' de '+total;
+ document.getElementById('taskCount').textContent=total+' itens';
+ const list=document.getElementById('tasks');list.innerHTML='';
+ if(!total){list.innerHTML='<div class="empty">Nenhuma tarefa por enquanto. Adicione sua primeira tarefa acima.</div>';return}
+ tasks.forEach(task=>{
+  const row=document.createElement('div');row.className='task'+(task.done?' done':'');
+  const check=document.createElement('input');check.type='checkbox';check.checked=task.done;check.setAttribute('aria-label','Concluir tarefa');
+  check.addEventListener('change',()=>{task.done=check.checked;save()});
+  const name=document.createElement('div');name.className='taskname';name.textContent=task.text;
+  const del=document.createElement('button');del.className='delete';del.textContent='×';del.setAttribute('aria-label','Excluir tarefa');
+  del.addEventListener('click',()=>{if(confirm('Excluir esta tarefa?')){tasks=tasks.filter(t=>t.id!==task.id);save()}});
+  row.append(check,name,del);list.append(row);
+ });
+}
+document.getElementById('taskForm').addEventListener('submit',e=>{
+ e.preventDefault();const input=document.getElementById('taskInput');const text=input.value.trim();if(!text)return;
+ tasks.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2),text,done:false,createdAt:new Date().toISOString()});input.value='';save();
+});
+document.querySelectorAll('nav button').forEach(btn=>btn.addEventListener('click',()=>{
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b===btn));
+ document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===btn.dataset.view));
+}));
+document.getElementById('exportBtn').addEventListener('click',()=>{
+ const blob=new Blob([JSON.stringify({app:'MYSPACE',version:1,tasks},null,2)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='myspace-backup.json';a.click();URL.revokeObjectURL(a.href);
+});
+document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change',async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{const data=JSON.parse(await f.text());if(!data||!Array.isArray(data.tasks)||!confirm('Importar este backup? As tarefas atuais serão substituídas.'))return;
+ tasks=data.tasks.filter(t=>t&&typeof t.text==='string').map(t=>({id:String(t.id||Date.now()),text:t.text.slice(0,100),done:!!t.done,createdAt:t.createdAt||''}));save();alert('Backup importado!');}
+ catch(err){alert('Não foi possível ler esse backup.')}
+ e.target.value='';
+});
+if('serviceWorker' in navigator && location.protocol!=='file:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+render();
+</script>
+</body></html>

@@ -1,0 +1,18 @@
+MYSPACE - primeira versão
+
+O que já funciona:
+- Criar tarefas
+- Marcar e desmarcar tarefas concluídas
+- Excluir tarefas
+- Resumo e progresso automático
+- Salvamento local automático
+- Exportar e importar backup JSON
+- Interface adaptada para celular
+
+IMPORTANTE:
+Para instalar como PWA e ativar o modo offline, os arquivos precisam estar hospedados em HTTPS. Abrir index.html diretamente como arquivo não ativa o service worker. O salvamento local das tarefas funciona no navegador, mas os dados ficam vinculados a esse navegador/dispositivo.
+
+Próxima etapa:
+Publicar os arquivos em uma hospedagem HTTPS (por exemplo, GitHub Pages) e então abrir o endereço no Chrome Android > menu ⋮ > Adicionar à tela inicial / Instalar app.
+
+Faça backups regulares. Limpar dados do navegador ou desinstalar pode apagar os dados locais.

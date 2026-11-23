@@ -1,0 +1,10 @@
+{
+  "name": "MYSPACE - Organização pessoal",
+  "short_name": "MYSPACE",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#10131b",
+  "theme_color": "#10131b",
+  "description": "Seu espaço para organizar tarefas e sua rotina.",
+  "icons": [{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
