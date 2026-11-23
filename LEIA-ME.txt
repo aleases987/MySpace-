@@ -1,9 +1,9 @@
-MYSPACE v3
+MYSPACE v4 ULTIMATE
 
-Novidades: calendário mensal interativo com compromissos por dia e resumo visual de entradas/despesas. Mantém tarefas, agenda, finanças, estudos, metas, notas e backup da v2.
+Inclui as funções da v3 e acrescenta: temas (escuro, azul meia-noite e claro), resumo de produtividade/finanças, lembretes por notificação enquanto o app está aberto, bloqueio local por PIN e instruções para guardar backup manualmente no Google Drive ou outro serviço.
 
-ATENÇÃO: esta versão mantém a mesma chave de armazenamento local (myspace.v2.data) para preservar os dados já existentes no mesmo navegador/dispositivo. Mesmo assim, faça um backup antes de atualizar. Não limpe os dados do site nem desinstale o app.
+COMPATIBILIDADE: mantém a chave de dados local myspace.v2.data. Faça backup antes de atualizar. Não limpe os dados do navegador nem desinstale o app.
 
-Atualização no GitHub: substitua os arquivos index.html, manifest.webmanifest, sw.js e icon.svg pelos desta pasta e faça Commit changes. O arquivo LEIA-ME.txt é apenas informativo. Aguarde o GitHub Pages publicar e reabra o app.
+LIMITAÇÕES IMPORTANTES: notificações quando o app está totalmente fechado exigem servidor de notificações push e configuração adicional. Sincronização automática entre aparelhos exige backend/serviço de nuvem e autenticação; esta versão oferece backup manual para a nuvem, não sincronização automática. O PIN é uma proteção local básica e não substitui a segurança do aparelho.
 
-Os dados permanecem locais, sem sincronização em nuvem. Notificações automáticas quando o app está fechado não fazem parte desta versão.
+ATUALIZAÇÃO: no GitHub, substitua index.html, manifest.webmanifest, sw.js e icon.svg pelos arquivos desta pasta e faça Commit changes. O cache do service worker foi atualizado para myspace-v4. Após publicar, feche e reabra o MYSPACE.
