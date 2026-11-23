@@ -1,18 +1,11 @@
-MYSPACE - primeira versão
+MYSPACE v2
 
-O que já funciona:
-- Criar tarefas
-- Marcar e desmarcar tarefas concluídas
-- Excluir tarefas
-- Resumo e progresso automático
-- Salvamento local automático
-- Exportar e importar backup JSON
-- Interface adaptada para celular
+Atualização com tarefas, agenda, finanças, estudos, metas, notas, backup e funcionamento offline via PWA.
 
-IMPORTANTE:
-Para instalar como PWA e ativar o modo offline, os arquivos precisam estar hospedados em HTTPS. Abrir index.html diretamente como arquivo não ativa o service worker. O salvamento local das tarefas funciona no navegador, mas os dados ficam vinculados a esse navegador/dispositivo.
+Como atualizar:
+1. No GitHub, abra o repositório.
+2. Abra cada arquivo e escolha Edit (lápis), substitua todo o conteúdo pelo arquivo correspondente desta pasta e faça Commit changes.
+3. Atualize também manifest.webmanifest, sw.js e icon.svg.
+4. Aguarde o Pages publicar. No Android, feche o MYSPACE e abra novamente. Se a versão antiga continuar, feche o app e limpe apenas o cache do site no Chrome; não limpe os dados do site, pois isso pode apagar seus registros locais.
 
-Próxima etapa:
-Publicar os arquivos em uma hospedagem HTTPS (por exemplo, GitHub Pages) e então abrir o endereço no Chrome Android > menu ⋮ > Adicionar à tela inicial / Instalar app.
-
-Faça backups regulares. Limpar dados do navegador ou desinstalar pode apagar os dados locais.
+Os dados são armazenados localmente no navegador/dispositivo, sem sincronização em nuvem. Faça backup regularmente. Esta versão tenta migrar as tarefas da versão anterior automaticamente.
