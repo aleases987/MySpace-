@@ -1,125 +1,88 @@
 <!doctype html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#10131b">
-  <title>MYSPACE</title>
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <style>
-    :root{color-scheme:dark;--bg:#10131b;--panel:#1b2230;--panel2:#222b3b;--text:#f4f6fb;--muted:#a5adbd;--gold:#e9c45b;--line:#30394a;--green:#65d6a1}
-    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif}
-    .app{max-width:760px;margin:auto;padding:22px 16px 100px}
-    header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 24px}
-    .logo{font-size:25px;font-weight:850;letter-spacing:2px}.logo span{color:var(--gold)}
-    .tag{font-size:11px;color:var(--green);border:1px solid #286b50;border-radius:20px;padding:6px 10px}
-    h1{font-size:28px;margin:0 0 5px} .sub{color:var(--muted);margin:0 0 22px}
-    .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px}
-    .card,.section{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
-    .statlabel{color:var(--muted);font-size:13px}.statnum{font-size:27px;font-weight:750;margin-top:5px}
-    .section{margin:14px 0}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-    h2{font-size:17px;margin:0}.small{font-size:12px;color:var(--muted)}
-    .progress{height:8px;background:#343e50;border-radius:20px;overflow:hidden;margin-top:10px}.bar{height:100%;width:0;background:var(--gold);transition:width .2s}
-    form{display:flex;gap:8px;margin:12px 0 4px}input,select,textarea{min-width:0;width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:13px;font:inherit}
-    button{border:0;border-radius:12px;padding:12px 15px;background:var(--gold);color:#171717;font-weight:750;font:inherit;cursor:pointer}
-    .add{white-space:nowrap;font-weight:800}.tasklist{display:grid;gap:8px}
-    .task{display:flex;align-items:center;gap:10px;background:var(--panel2);padding:12px;border-radius:13px}
-    .task input{width:20px;height:20px;accent-color:var(--gold);flex:0 0 auto}
-    .taskname{flex:1;overflow-wrap:anywhere}.done .taskname{text-decoration:line-through;color:var(--muted)}
-    .delete{background:transparent;color:#ff9292;padding:5px 8px;font-size:18px}
-    .empty{color:var(--muted);text-align:center;padding:18px 4px;font-size:14px}
-    nav{position:fixed;bottom:0;left:0;right:0;background:#151a24ee;border-top:1px solid var(--line);display:flex;justify-content:center;gap:8px;padding:10px 8px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(12px)}
-    nav button{background:transparent;color:var(--muted);font-size:12px;padding:9px 12px}nav button.active{color:var(--gold);background:#292a2a}
-    .view{display:none}.view.active{display:block}.notice{color:var(--muted);font-size:13px;line-height:1.5}
-    .backup{display:flex;gap:8px;flex-wrap:wrap}.backup button{font-size:13px}
-    @media(min-width:560px){.stats{grid-template-columns:repeat(4,1fr)}}
-  </style>
-</head>
-<body>
-<div class="app">
-  <header><div class="logo">MY<span>SPACE</span></div><div class="tag">● SALVO NO DISPOSITIVO</div></header>
-  <section id="home" class="view active">
-    <h1>Olá! 👋</h1><p class="sub">Vamos organizar seu dia?</p>
-    <div class="stats">
-      <div class="card"><div class="statlabel">Tarefas no total</div><div class="statnum" id="total">0</div></div>
-      <div class="card"><div class="statlabel">Concluídas</div><div class="statnum" id="completed">0</div></div>
-      <div class="card"><div class="statlabel">Pendentes</div><div class="statnum" id="pending">0</div></div>
-      <div class="card"><div class="statlabel">Progresso</div><div class="statnum" id="percent">0%</div></div>
-    </div>
-    <div class="section"><div class="sectionhead"><h2>Progresso das tarefas</h2><span class="small" id="progressText">0 de 0</span></div><div class="progress"><div class="bar" id="bar"></div></div></div>
-    <div class="section"><div class="sectionhead"><h2>Adicionar tarefa</h2><span class="small">Salvamento automático</span></div>
-      <form id="taskForm"><input id="taskInput" maxlength="100" placeholder="Ex.: Estudar matemática..." autocomplete="off" required><button class="add" type="submit">Adicionar</button></form>
-    </div>
-    <div class="section"><div class="sectionhead"><h2>Minhas tarefas</h2><span class="small" id="taskCount">0 itens</span></div><div id="tasks" class="tasklist"></div></div>
-  </section>
-  <section id="agenda" class="view">
-    <h1>Agenda</h1><p class="sub">Seus compromissos em um só lugar.</p>
-    <div class="section"><h2>Em breve</h2><p class="notice">A próxima etapa será adicionar compromissos, datas e lembretes. Nesta primeira versão, o sistema de tarefas já funciona e salva seus dados localmente.</p></div>
-  </section>
-  <section id="financas" class="view">
-    <h1>Finanças</h1><p class="sub">Acompanhe seu dinheiro.</p>
-    <div class="section"><h2>Em breve</h2><p class="notice">Vamos adicionar receitas, despesas e saldo na próxima etapa.</p></div>
-  </section>
-  <section id="mais" class="view">
-    <h1>Mais opções</h1><p class="sub">Proteja seus dados e personalize seu espaço.</p>
-    <div class="section"><h2>Backup dos seus dados</h2><p class="notice">Exporte uma cópia das tarefas ou importe um backup salvo anteriormente.</p><div class="backup"><button id="exportBtn">Exportar backup</button><button id="importBtn">Importar backup</button><input id="fileInput" type="file" accept="application/json" hidden></div></div>
-    <div class="section"><h2>Sobre o MYSPACE</h2><p class="notice">Versão inicial • Funciona offline depois de instalado. Os dados ficam neste dispositivo e neste navegador. Limpar os dados do navegador ou desinstalar pode apagá-los; faça backups regularmente.</p></div>
-  </section>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10131b"><title>MYSPACE</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg">
+<style>
+:root{color-scheme:dark;--bg:#10131b;--p:#1b2230;--p2:#222b3b;--t:#f4f6fb;--m:#a5adbd;--g:#e9c45b;--ln:#30394a;--ok:#65d6a1;--red:#ff9292}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font:15px system-ui,-apple-system,Segoe UI,sans-serif}.app{max-width:760px;margin:auto;padding:18px 15px 100px}
+header{display:flex;justify-content:space-between;align-items:center;margin:8px 0 24px}.logo{font-size:24px;font-weight:850;letter-spacing:2px}.logo span{color:var(--g)}.tag{font-size:10px;color:var(--ok);border:1px solid #286b50;border-radius:20px;padding:6px 9px}
+h1{font-size:27px;margin:0 0 4px}h2{font-size:17px;margin:0}.sub{color:var(--m);margin:0 0 20px}.muted,.hint{color:var(--m);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.card,.section{background:var(--p);border:1px solid var(--ln);border-radius:17px;padding:15px;margin:12px 0}.statlabel{color:var(--m);font-size:12px}.statnum{font-size:26px;font-weight:750;margin-top:4px}
+.sectionhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:13px}.progress{height:7px;background:#343e50;border-radius:20px;overflow:hidden;margin-top:9px}.bar{height:100%;background:var(--g);width:0}
+form{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}.fields{display:grid;gap:8px;grid-column:1/-1}.fields.two{grid-template-columns:1fr 1fr}
+input,select,textarea{width:100%;min-width:0;background:var(--p2);border:1px solid var(--ln);border-radius:11px;color:var(--t);padding:12px;font:inherit}textarea{min-height:95px;resize:vertical}
+button{border:0;border-radius:11px;padding:11px 14px;background:var(--g);color:#171717;font:inherit;font-weight:700;cursor:pointer}.secondary{background:var(--p2);color:var(--t);border:1px solid var(--ln)}.danger{background:transparent;color:var(--red);padding:5px 8px}.list{display:grid;gap:8px}.item{display:flex;align-items:center;gap:10px;background:var(--p2);padding:11px;border-radius:12px}.item .body{flex:1;min-width:0;overflow-wrap:anywhere}.item small{display:block;color:var(--m);font-size:11px;margin-top:3px}.item input[type=checkbox]{width:19px;height:19px;accent-color:var(--g)}.done .body{text-decoration:line-through;color:var(--m)}.empty{text-align:center;color:var(--m);padding:17px;font-size:13px}.view{display:none}.view.active{display:block}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#151a24f2;border-top:1px solid var(--ln);padding:8px 4px calc(8px + env(safe-area-inset-bottom));backdrop-filter:blur(12px);z-index:5}nav button{background:transparent;color:var(--m);padding:8px 9px;font-size:11px}nav button.active{color:var(--g);background:#292a2a}
+.notice{font-size:12px;color:var(--m);line-height:1.5}.actions{display:flex;gap:7px;flex-wrap:wrap}.actions button{font-size:12px}.pill{font-size:10px;border:1px solid var(--ln);border-radius:20px;padding:3px 7px;color:var(--m)}
+@media(min-width:560px){.grid{grid-template-columns:repeat(4,1fr)}}
+</style></head><body><div class="app">
+<header><div class="logo">MY<span>SPACE</span></div><div class="tag">● DADOS SALVOS</div></header>
+<section id="home" class="view active"><h1>Olá! 👋</h1><p class="sub">Seu espaço, sua rotina.</p>
+<div class="grid">
+<div class="card"><div class="statlabel">Tarefas pendentes</div><div class="statnum" id="sTasks">0</div></div>
+<div class="card"><div class="statlabel">Compromissos</div><div class="statnum" id="sEvents">0</div></div>
+<div class="card"><div class="statlabel">Metas ativas</div><div class="statnum" id="sGoals">0</div></div>
+<div class="card"><div class="statlabel">Saldo registrado</div><div class="statnum" id="sBalance">0</div></div>
+</div>
+<div class="section"><div class="sectionhead"><h2>Progresso das tarefas</h2><span class="muted" id="progressText">0 de 0</span></div><div class="progress"><div class="bar" id="bar"></div></div></div>
+<div class="section"><div class="sectionhead"><h2>Próximas tarefas</h2><span class="pill">Resumo</span></div><div id="homeTasks" class="list"></div></div>
+<div class="section"><h2>Bem-vindo ao MYSPACE</h2><p class="notice">Use o menu inferior para organizar tarefas, agenda, finanças, estudos, metas e notas. As alterações são salvas automaticamente neste dispositivo.</p></div></section>
+
+<section id="tasks" class="view"><h1>Tarefas</h1><p class="sub">Anote o que precisa fazer.</p><div class="section"><h2>Nova tarefa</h2><form id="taskForm"><div class="fields"><input id="taskText" placeholder="O que você precisa fazer?" maxlength="120" required><input id="taskDate" type="date"></div><button>Adicionar</button></form></div><div class="section"><div class="sectionhead"><h2>Minha lista</h2><span id="taskCount" class="muted"></span></div><div id="taskList" class="list"></div></div></section>
+
+<section id="agenda" class="view"><h1>Agenda</h1><p class="sub">Guarde datas e compromissos.</p><div class="section"><h2>Novo compromisso</h2><form id="eventForm"><div class="fields"><input id="eventTitle" placeholder="Nome do compromisso" maxlength="120" required><div class="fields two"><input id="eventDate" type="date" required><input id="eventTime" type="time"></div><input id="eventPlace" placeholder="Local (opcional)"></div><button>Salvar</button></form></div><div class="section"><h2>Compromissos</h2><div id="eventList" class="list"></div></div></section>
+
+<section id="finance" class="view"><h1>Finanças</h1><p class="sub">Registre entradas e despesas.</p><div class="grid"><div class="card"><div class="statlabel">Entradas</div><div class="statnum" id="income">0</div></div><div class="card"><div class="statlabel">Despesas</div><div class="statnum" id="expense">0</div></div></div><div class="section"><h2>Novo lançamento</h2><form id="moneyForm"><div class="fields"><input id="moneyDesc" placeholder="Descrição" maxlength="100" required><div class="fields two"><select id="moneyType"><option value="in">Entrada</option><option value="out">Despesa</option></select><input id="moneyValue" type="number" min="0.01" step="0.01" placeholder="Valor" required></div><input id="moneyDate" type="date" required></div><button>Registrar</button></form></div><div class="section"><h2>Histórico</h2><div id="moneyList" class="list"></div></div></section>
+
+<section id="study" class="view"><h1>Estudos</h1><p class="sub">Organize matérias e atividades.</p><div class="section"><h2>Adicionar matéria ou atividade</h2><form id="studyForm"><div class="fields"><input id="studyText" placeholder="Ex.: Matemática — revisar capítulo 2" maxlength="140" required></div><button>Adicionar</button></form></div><div class="section"><div id="studyList" class="list"></div></div></section>
+
+<section id="goals" class="view"><h1>Metas</h1><p class="sub">Acompanhe seus objetivos.</p><div class="section"><h2>Nova meta</h2><form id="goalForm"><div class="fields"><input id="goalText" placeholder="Ex.: Ler 3 livros" maxlength="120" required><div class="fields two"><input id="goalTarget" type="number" min="1" value="10" placeholder="Objetivo"><input id="goalCurrent" type="number" min="0" value="0" placeholder="Progresso atual"></div></div><button>Criar meta</button></form></div><div class="section"><div id="goalList" class="list"></div></div></section>
+
+<section id="notes" class="view"><h1>Notas</h1><p class="sub">Guarde ideias e informações.</p><div class="section"><h2>Nova anotação</h2><form id="noteForm"><div class="fields"><input id="noteTitle" placeholder="Título" maxlength="100" required><textarea id="noteBody" placeholder="Escreva sua anotação..."></textarea></div><button>Salvar nota</button></form></div><div class="section"><div id="noteList" class="list"></div></div></section>
+
+<section id="more" class="view"><h1>Configurações</h1><p class="sub">Seus dados e sua privacidade.</p><div class="section"><h2>Backup</h2><p class="notice">Exporte regularmente uma cópia dos seus dados. Importar um backup substitui os dados atuais.</p><div class="actions"><button id="export">Exportar backup</button><button class="secondary" id="import">Importar backup</button><input id="backupFile" type="file" accept="application/json" hidden></div></div><div class="section"><h2>Sobre o armazenamento</h2><p class="notice">Os dados ficam no armazenamento local deste navegador/dispositivo. Eles não são sincronizados entre aparelhos. Limpar os dados do navegador ou desinstalar o app pode apagá-los. Faça backups para evitar perdas.</p></div></section>
 </div>
 <nav>
-  <button class="active" data-view="home">⌂ Início</button>
-  <button data-view="agenda">▦ Agenda</button>
-  <button data-view="financas">＄ Finanças</button>
-  <button data-view="mais">⋯ Mais</button>
+<button class="active" data-view="home">⌂<br>Início</button><button data-view="tasks">✓<br>Tarefas</button><button data-view="agenda">▦<br>Agenda</button><button data-view="finance">＄<br>Finanças</button><button data-view="study">▤<br>Estudos</button><button data-view="goals">◎<br>Metas</button><button data-view="notes">✎<br>Notas</button><button data-view="more">⋯<br>Mais</button>
 </nav>
 <script>
-const KEY='myspace.tasks.v1';
-let tasks=[];
-try{tasks=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(tasks))tasks=[]}catch(e){tasks=[]}
-const save=()=>{localStorage.setItem(KEY,JSON.stringify(tasks));render()};
+const K='myspace.v2.data';const today=()=>new Date().toISOString().slice(0,10);
+let db={tasks:[],events:[],money:[],studies:[],goals:[],notes:[]};
+try{const old=JSON.parse(localStorage.getItem(K)||'null');if(old)db={...db,...old};else{const v1=JSON.parse(localStorage.getItem('myspace.tasks.v1')||'[]');db.tasks=Array.isArray(v1)?v1:[]}}catch(e){}
+const save=()=>{localStorage.setItem(K,JSON.stringify(db));render()};
+const el=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=n=>Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+function empty(id,msg){el(id).innerHTML='<div class="empty">'+msg+'</div>'}
+function taskRows(id,arr){const root=el(id);root.innerHTML='';if(!arr.length)return empty(id,'Nada por aqui ainda.');arr.forEach(t=>{const d=document.createElement('div');d.className='item'+(t.done?' done':'');d.innerHTML='<input type="checkbox" '+(t.done?'checked':'')+' aria-label="Concluir"><div class="body">'+esc(t.text)+(t.date?'<small>'+esc(t.date)+'</small>':'')+'</div><button class="danger" aria-label="Excluir">×</button>';d.querySelector('input').onchange=e=>{t.done=e.target.checked;save()};d.querySelector('button').onclick=()=>remove('tasks',t.id);root.append(d)})}
+function remove(type,id){if(confirm('Excluir este item?')){db[type]=db[type].filter(x=>x.id!==id);save()}}
+function rows(id,type,arr,formatter){const root=el(id);root.innerHTML='';if(!arr.length)return empty(id,'Nada registrado ainda.');arr.forEach(x=>{const d=document.createElement('div');d.className='item';d.innerHTML='<div class="body">'+formatter(x)+'</div><button class="danger" aria-label="Excluir">×</button>';d.querySelector('button').onclick=()=>remove(type,x.id);root.append(d)})}
+function add(type,obj){db[type].unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2),...obj});save()}
 function render(){
- const done=tasks.filter(t=>t.done).length,total=tasks.length,pct=total?Math.round(done/total*100):0;
- document.getElementById('total').textContent=total;
- document.getElementById('completed').textContent=done;
- document.getElementById('pending').textContent=total-done;
- document.getElementById('percent').textContent=pct+'%';
- document.getElementById('bar').style.width=pct+'%';
- document.getElementById('progressText').textContent=done+' de '+total;
- document.getElementById('taskCount').textContent=total+' itens';
- const list=document.getElementById('tasks');list.innerHTML='';
- if(!total){list.innerHTML='<div class="empty">Nenhuma tarefa por enquanto. Adicione sua primeira tarefa acima.</div>';return}
- tasks.forEach(task=>{
-  const row=document.createElement('div');row.className='task'+(task.done?' done':'');
-  const check=document.createElement('input');check.type='checkbox';check.checked=task.done;check.setAttribute('aria-label','Concluir tarefa');
-  check.addEventListener('change',()=>{task.done=check.checked;save()});
-  const name=document.createElement('div');name.className='taskname';name.textContent=task.text;
-  const del=document.createElement('button');del.className='delete';del.textContent='×';del.setAttribute('aria-label','Excluir tarefa');
-  del.addEventListener('click',()=>{if(confirm('Excluir esta tarefa?')){tasks=tasks.filter(t=>t.id!==task.id);save()}});
-  row.append(check,name,del);list.append(row);
- });
+ const pending=db.tasks.filter(x=>!x.done).length,done=db.tasks.filter(x=>x.done).length,total=db.tasks.length,pct=total?Math.round(done/total*100):0;
+ el('sTasks').textContent=pending;el('sEvents').textContent=db.events.length;el('sGoals').textContent=db.goals.length;
+ const bal=db.money.reduce((s,x)=>s+(x.type==='in'?1:-1)*Number(x.value),0);el('sBalance').textContent=money(bal);
+ el('progressText').textContent=done+' de '+total;el('bar').style.width=pct+'%';el('taskCount').textContent=total+' itens';
+ taskRows('taskList',db.tasks);taskRows('homeTasks',db.tasks.filter(x=>!x.done).slice(0,4));
+ rows('eventList','events',db.events,x=>'<b>'+esc(x.title)+'</b><small>'+esc(x.date)+' '+esc(x.time||'')+(x.place?' · '+esc(x.place):'')+'</small>');
+ const inc=db.money.filter(x=>x.type==='in').reduce((s,x)=>s+Number(x.value),0),out=db.money.filter(x=>x.type==='out').reduce((s,x)=>s+Number(x.value),0);
+ el('income').textContent=money(inc);el('expense').textContent=money(out);
+ rows('moneyList','money',db.money,x=>'<b>'+(x.type==='in'?'＋ ':'− ')+esc(x.desc)+'</b><small>'+esc(x.date)+' · '+money(x.value)+'</small>');
+ rows('studyList','studies',db.studies,x=>'<b>'+esc(x.text)+'</b>');
+ rows('goalList','goals',db.goals,x=>'<b>'+esc(x.text)+'</b><small>'+Number(x.current)+' / '+Number(x.target)+' · '+Math.min(100,Math.round(Number(x.current)/Math.max(1,Number(x.target))*100))+'%</small>');
+ rows('noteList','notes',db.notes,x=>'<b>'+esc(x.title)+'</b><small>'+esc(x.body).replace(/\n/g,' ')+'</small>');
 }
-document.getElementById('taskForm').addEventListener('submit',e=>{
- e.preventDefault();const input=document.getElementById('taskInput');const text=input.value.trim();if(!text)return;
- tasks.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2),text,done:false,createdAt:new Date().toISOString()});input.value='';save();
-});
-document.querySelectorAll('nav button').forEach(btn=>btn.addEventListener('click',()=>{
- document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b===btn));
- document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===btn.dataset.view));
-}));
-document.getElementById('exportBtn').addEventListener('click',()=>{
- const blob=new Blob([JSON.stringify({app:'MYSPACE',version:1,tasks},null,2)],{type:'application/json'});
- const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='myspace-backup.json';a.click();URL.revokeObjectURL(a.href);
-});
-document.getElementById('importBtn').addEventListener('click',()=>document.getElementById('fileInput').click());
-document.getElementById('fileInput').addEventListener('change',async e=>{
- const f=e.target.files[0];if(!f)return;
- try{const data=JSON.parse(await f.text());if(!data||!Array.isArray(data.tasks)||!confirm('Importar este backup? As tarefas atuais serão substituídas.'))return;
- tasks=data.tasks.filter(t=>t&&typeof t.text==='string').map(t=>({id:String(t.id||Date.now()),text:t.text.slice(0,100),done:!!t.done,createdAt:t.createdAt||''}));save();alert('Backup importado!');}
- catch(err){alert('Não foi possível ler esse backup.')}
- e.target.value='';
-});
-if('serviceWorker' in navigator && location.protocol!=='file:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+el('taskForm').onsubmit=e=>{e.preventDefault();add('tasks',{text:el('taskText').value.trim(),date:el('taskDate').value,done:false});e.target.reset()};
+el('eventForm').onsubmit=e=>{e.preventDefault();add('events',{title:el('eventTitle').value.trim(),date:el('eventDate').value,time:el('eventTime').value,place:el('eventPlace').value.trim()});e.target.reset()};
+el('moneyForm').onsubmit=e=>{e.preventDefault();add('money',{desc:el('moneyDesc').value.trim(),type:el('moneyType').value,value:Number(el('moneyValue').value),date:el('moneyDate').value});e.target.reset();el('moneyDate').value=today()};
+el('studyForm').onsubmit=e=>{e.preventDefault();add('studies',{text:el('studyText').value.trim()});e.target.reset()};
+el('goalForm').onsubmit=e=>{e.preventDefault();add('goals',{text:el('goalText').value.trim(),target:Math.max(1,Number(el('goalTarget').value)),current:Math.max(0,Number(el('goalCurrent').value))});e.target.reset()};
+el('noteForm').onsubmit=e=>{e.preventDefault();add('notes',{title:el('noteTitle').value.trim(),body:el('noteBody').value.trim()});e.target.reset()};
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===b.dataset.view))});
+el('export').onclick=()=>{const blob=new Blob([JSON.stringify({app:'MYSPACE',version:2,data:db},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='myspace-backup.json';a.click();URL.revokeObjectURL(a.href)};
+el('import').onclick=()=>el('backupFile').click();el('backupFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const x=JSON.parse(await f.text());const d=x.data||x;if(!confirm('Substituir os dados atuais pelo backup?'))return;for(const k of Object.keys(db))if(Array.isArray(d[k]))db[k]=d[k];save();alert('Backup importado com sucesso.')}catch(err){alert('Arquivo de backup inválido.')}e.target.value=''};
+el('eventDate').value=today();el('moneyDate').value=today();
+if('serviceWorker'in navigator&&location.protocol!=='file:')addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 render();
-</script>
-</body></html>
+</script></body></html>
